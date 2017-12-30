@@ -1,0 +1,12 @@
+[
+    {
+        "icon": "varnish.png",
+        "name": "Varnish Admin",
+        "group_id": "advanced",
+        "order": "10",
+        "type": "link",
+        "id": "nemj-varnish",
+        "uri": "/frontend/paper_lantern/nemj_varnish/index.html.tt"
+    }
+]
+
