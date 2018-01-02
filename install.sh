@@ -32,11 +32,18 @@ fi
 cp -v ${cwd}/index.live.php $dst
 cp -v ${cwd}/Varnish.php $dst
 cp -v ${cwd}/varnish.css $dst
-cp -v ${cwd}/varnish.js $dst
+cp -v ${cwd}/disable.live.php $dst
+cp -v ${cwd}/enable.live.php $dst
 cp -v ${cwd}/Cpanel/API/NemjVarnish.pm $api
 cp -v ${cwd}/bin/admin/Nemanja/Varnish.conf $adm
 cp -v ${cwd}/bin/admin/Nemanja/Varnish $adm
 
+mkdir -p /etc/nemke/supervisor.d/
+touch /etc/nemke/supervisor.d/varnish.conf
+
+chmod 755 /etc/nemke/
+chmod 755 /etc/nemke/supervisor.d/
+chmod 644 /etc/nemke/supervisor.d/varnish.conf
 chmod 700 ${adm}/Varnish
 
 themes=('paper_lantern')

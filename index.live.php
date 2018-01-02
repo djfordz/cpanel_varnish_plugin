@@ -8,7 +8,6 @@ ini_set('display_errors', 1);
 require_once '/usr/local/cpanel/php/cpanel.php';
 require_once 'Varnish.php';
 require_once 'varnish.css';
-require_once 'varnish.js';
 
 // instantiate CPANEL class and pass class to our Varnish class
 $cpanel = new CPANEL();
@@ -18,37 +17,46 @@ $varnish = new Varnish($cpanel);
 print $cpanel->header("Varnish Cache", "nemj-varnish");
 
 $dirs = $varnish->listDirs();
-
-if (isset($_POST['path']) && isset($_POST['enable'])) {
-    $varnish->enable($POST['path']);    
-}    
-
+$i = 1;
 ?>
-
-<div class="wrapper">
-    <div class="description">
+<div id="nemj-wrapper">
+    <div id='desc' class="desc">
         <p>Enable/Disable Varnish</p>
     </div>
 
-    <form method="POST">
-        <div class="list">
-            <h4 class="title"><?php echo $varnish->getUserPath() . '/'; ?></h4>
+    <div id="nemj-list">
+        <h4>Varnish instances enabled</h4>
+        <ul>
+        <?php $userConfigs = $varnish->display(); ?>
+            <?php foreach($userConfigs as $userConfig) { ?>
+                <?php if (isset($userConfig)) { ?>
+                <li>
+                    <form method='POST' action='disable.live.php' name='disable-<?php echo $i; ?>' id='form-<?php echo $i; ?>'>
+                        <input type='text'class='input' value='<?php echo $varnish->getUser(); ?>' id='user-<?php echo $i ?>' readonly />
+                        <input type='text' class='input' value='<?php echo $userConfig[1]; ?>' name='port' id='port-<?php echo $i; ?>' readonly />
+                        <input type='text' class='input' value='<?php echo $userConfig[2]; ?>' name='dataPath' id='dataPath-<?php echo $i ?>' readonly />
+                        <input type='submit' class='button remove' value='Disable' name='disable' id='disable-<?php echo $i; ?>' />
+                    </form>
+                </li>
+                <?php } ?>
+            <?php $i++; } ?>
+        </ul>
+    </div>
+    <hr />
+    <div id="enable-wrapper" class="enable">
+        <h4 class="title"><?php echo $varnish->__($varnish->getUserPath()) . '/'; ?></h4>
+        <form method="POST" action="enable.live.php" id="form-enable">
             <select name="path" required>
                 <?php foreach($dirs as $dir) {
                 $p = explode('/', $dir['path']);
                 $path = array_pop($p);
                 ?>
-                    <option <?php if($_POST['varnish'] == 'enable' && $_POST['path'] == $path) { ?> selected <?php } ?> value="<?php echo $path ?>"><?php echo $path ?></option>
+                    <option><?php echo $path ?></option>
                 <?php } ?>
             </select>
-            <select name="varnish" required>
-            <option <?php if ($_POST['varnish'] == 'disable') { ?> selected <?php } ?> value="disable">disable</option>
-                <option <?php if ($_POST['varnish'] == 'enable') { ?> selected <?php } ?> value="enable">enable</option>
-            </select>
-            <button>Update</button>
-        </div>
-    </form>
-    
+            <input type="submit" class='button update' value="Enable" name='enable' id="enable" />
+        </form>
+    </div>
 </div>
 
 <?php

@@ -1,0 +1,144 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+
+package Nemanja::Varnish;
+
+use strict;
+
+use parent qw( Cpanel::AdminBin::Script::Call );
+
+use Cpanel::Logger            ();
+use Cpanel::FileUtils::Write  ();
+use Cpanel::FileUtils::Read   ();
+use autodie;
+
+__PACKAGE__->run() if !caller;
+
+sub _actions {
+    return qw(
+        WRITE
+        OVERWRITE
+        READ
+        START
+        STOP
+        RESTART
+        RELOAD
+        START_VARNISH
+        STOP_VARNISH
+        RESTART_VARNISH
+        RELOAD_VARNISH
+        );
+    }
+
+sub WRITE {
+    my ($self, $path, $data) = @_;
+
+    my $val;
+    
+    $val = Cpanel::FileUtils::Write::write(
+            $path, $data, 0644,
+        );
+
+    return $val;
+}
+
+sub OVERWRITE {
+    my ($self, $path, $data) = @_;
+
+    my $val;
+    
+    $val = Cpanel::FileUtils::Write::overwrite(
+            $path, $data, 0644,
+        );
+
+    return $val;
+}
+
+sub READ {
+    my ($self, $path) = @_;
+    my $val;
+
+    open(FH, '<', $path) or die $!;
+
+    while(<FH>) {
+        $val .= $_;
+    }
+
+    close(FH);
+
+    return $val;
+}
+
+sub START {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `service $program start`;
+
+    return $val;
+}
+
+sub STOP {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `service $program stop`;
+
+    return $val;
+}
+
+sub RESTART {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    printf($program);
+
+    $val = `service $program restart`;
+
+    printf($val);
+    return $val;
+}
+
+sub RELOAD {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `service $program reload`;
+
+    return $val;
+}
+
+sub START_VARNISH {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `supervisorctl start $program`;
+
+    return $val;
+}
+
+sub STOP_VARNISH {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `supervisorctl stop $program`;
+
+    return $val;
+}
+
+sub RESTART_VARNISH {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `supervisorctl restart $program`;
+}
+
+sub RELOAD_VARNISH {
+    my ( $self, $program ) = @_;
+    my $val;
+
+    $val = `supervisorctl reload $program`;
+
+    return $val;
+}
+
+1;

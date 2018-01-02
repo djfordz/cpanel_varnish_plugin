@@ -1,0 +1,83 @@
+<style>
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+#nemj-list h4 {
+    margin-left: 60px;
+    width: 400px;
+    display: inline-block;
+}
+
+#desc {
+    margin-left: 20px;
+}
+
+#desc p {
+    color: #a0a0a0;
+}
+
+#nemj-wrapper {
+    border-radius: 15px;
+    width: auto;
+    padding: 0 5%;
+}
+
+#nemj-wrapper p {
+    color: #a0a0a0;
+}
+
+#nemj-list {
+    width: 650px;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    padding: 10px;
+}
+
+#ip, #label {
+    outline: none;
+    border: none;
+    text-align: center;
+}
+
+.input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    margin: 5px 10px;
+    line-height: 1.5em;
+}
+
+.button {
+    border-radius: 5px;
+    width: auto;
+    border: none;
+    color: white;
+    line-height: 1.7em;
+    font-size: 1em;
+}
+
+#ip-wrapper {
+    width: 600px;
+    margin-top: 5%;
+}
+
+.remove {
+    margin-left: 10px;
+    background-color: red;
+}
+
+.update {
+    background-color: green;
+}
+.cancel {
+    background-color: #3C33FF;
+}
+
+#enable-wrapper {
+    margin-top: 5%;
+}
+</style>
