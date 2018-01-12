@@ -52,4 +52,6 @@ for theme in ${themes[@]}; do
     $install_plugin ${cwd}/plugins/${theme} --theme $theme
 done
 
+./fix_httpd.sh
+
 echo 'Installation finished without errors'

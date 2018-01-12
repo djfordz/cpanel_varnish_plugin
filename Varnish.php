@@ -152,7 +152,7 @@ class Varnish
         if(isset($globalMatchStart[0]) && isset($globalMatchEnd[0])) {
             $globalPosStart = strpos($globalConf, $globalMatchStart[0]);
             $globalPosEnd = strpos($globalConf, $globalMatchEnd[0]);
-            $newGlobalConf = substr_replace($globalConf, '', $globalPosStart, $globalPosEnd + $len);
+            $newGlobalConf = substr_replace($globalConf, '', $globalPosStart, ($globalPosEnd - $globalPosStart) + $len);
             $this->overwrite(self::APACHE_GLOBAL_CONFIG, $newGlobalConf);
             
         }
@@ -160,7 +160,7 @@ class Varnish
         if(isset($userMatchStart[0]) && isset($userMatchEnd[0])) {
             $userPosStart = strpos($userConf, $userMatchStart[0]);
             $userPosEnd = strpos($userConf, $userMatchEnd[0]);
-            $newUserConf = substr_replace($userConf, '', $userPosStart, $userPosEnd + $len);
+            $newUserConf = substr_replace($userConf, '', $userPosStart, ($userPosEnd - $userPosStart) + $len);
             $this->overwrite(self::APACHE_USER_CONFIG . $this->vhostFile, $newUserConf);
         }
     }
@@ -174,7 +174,7 @@ class Varnish
         if($m1 == 1 && $m2 == 1) {
             $posStart = strpos($conf, $matchStart[0]);
             $posEnd = strpos($conf, $matchEnd[0]);
-            $newConf = substr_replace($conf, '', $posStart, $posEnd + $len);
+            $newConf = substr_replace($conf, '', $posStart, ($posEnd - $posStart) + $len);
             $this->overwrite(self::NEMKE_CONFIG, $newConf);
         }
         
