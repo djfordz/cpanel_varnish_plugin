@@ -7,6 +7,7 @@ install_plugin='/usr/local/cpanel/scripts/install_plugin'
 dst='/usr/local/cpanel/base/frontend/paper_lantern/nemj_varnish'
 api='/usr/local/cpanel/Cpanel/API'
 adm='/usr/local/cpanel/bin/admin/Nemanja'
+etc='/etc'
 
 if [ $EUID -ne 0 ]; then
     echo 'Script requires root privileges, run it as root or with sudo'
@@ -34,6 +35,7 @@ cp -v ${cwd}/Varnish.php $dst
 cp -v ${cwd}/varnish.css $dst
 cp -v ${cwd}/disable.live.php $dst
 cp -v ${cwd}/enable.live.php $dst
+cp -v ${cwd}/supervisord.conf $etc
 cp -v ${cwd}/Cpanel/API/NemjVarnish.pm $api
 cp -v ${cwd}/bin/admin/Nemanja/Varnish.conf $adm
 cp -v ${cwd}/bin/admin/Nemanja/Varnish $adm
