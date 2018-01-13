@@ -18,10 +18,18 @@ Note:: Plugin has only been tested with Varnish version 4.1.9 and Supervisord ve
 
 If you use any other versions, please let me know if it works or not by submitting an issue.
 
+### If you wish to use Varnish over https you must install an Nginx Reverse Proxy
+
+We recommend using [Autom8n](https://www.autom8n.com/) but it is not free.
+This is what this plugin is tested with, if you use any other nginx reverse proxy, let us know if it works.
+
 ### Install Cpanel Varnish Plugin
 
 run the install.sh script as root. (NOTE: Cpanel plugins can only be installed by root user)
 `./install.sh`
+
+In http.conf, there is one thing you must do:
+uncomment/add this line to end of every `<VirtualHost>`
 
 ## Usage
 

@@ -5,6 +5,7 @@ class Varnish
     const NEMKE_CONFIG = "/etc/nemke/supervisor.d/varnish.conf";
     const APACHE_GLOBAL_CONFIG = "/etc/apache2/conf.d/includes/post_virtualhost_global.conf";
     const APACHE_USER_CONFIG = "/etc/apache2/conf.d/userdata/std/2_4/";
+    const NGINX_SITE_CONFIG = "/etc/nginx/sites-enabled/";
 
     protected $cpanel;
     protected $userPath;
@@ -15,6 +16,7 @@ class Varnish
     protected $listenPort;
     protected $path;
     protected $config;
+    protected $nginxConfig;
 
     public function __construct(CPANEL $cpanel)
     {
@@ -24,6 +26,7 @@ class Varnish
         $this->userPath = "/home/$this->cpanelUser";
         $this->serverName = $this->getMainDomain();
         $this->vhostFile = $this->cpanelUser . "/$this->serverName" . "/$this->cpanelUser" . "_varnish.conf";
+        $this->nginxConfig = "/$this->serverName" . ".include";
         $this->config = $this->readConfig(self::NEMKE_CONFIG);
     }
 
@@ -88,8 +91,10 @@ class Varnish
         $this->config[] = array("[program:$this->cpanelUser" . "_$this->adminPort" . "_$this->path]", $this->adminPort, $this->path);
         $this->applyNemkeConfig();
         $this->applyApacheConfig();
+        $this->sslEnable();
         $this->reload('httpd');
         $this->reload('supervisord');
+        $this->reload('nginx');
         
     }
 
@@ -365,6 +370,25 @@ class Varnish
         }
 
         return $result;
+    }
+
+    protected function procCheck($proc) {
+        $flag = false;
+        exec("pgrep $proc", $output, $return);
+
+        if($return == 0) {
+            $flag = true;
+        }
+
+        return $flag;
+    }
+
+    protected function sslEnable() {
+        $conf = $this->_read(self::NGINX_SITE_CONFIG . $this->nginxConfig);
+
+        $data = preg_replace("/proxy_pass(.*;)/", "proxy_pass http://127.0.0.1:$this->listenPort" . ";", $conf, 1);
+    
+        $this->overwrite(self::NGINX_SITE_CONFIG . $this->nginxConfig, $data);
     }
 
     protected function applyNemkeConfig() {
