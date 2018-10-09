@@ -6,7 +6,7 @@
         "order": "10",
         "type": "link",
         "id": "nemj-varnish",
-        "uri": "/frontend/paper_lantern/nemj_varnish/index.html.tt"
+        "uri": "/frontend/paper_lantern/nemj_varnish/index.live.php"
     }
 ]
 
